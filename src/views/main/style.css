@@ -18,6 +18,18 @@
 .todayList {
   border: 0.25rem solid #07070a;
   padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  & input {
+    padding: 0.5rem;
+    width: 10rem;
+    border: none;
+    background: none;
+    outline: 0.25rem solid #07070a;
+    color: white;
+  }
 }
 
 .eventsInfo {
