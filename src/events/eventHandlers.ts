@@ -32,6 +32,10 @@ export function setupEventInput() {
     saveEventsToStorage(events);
 
     el.remove();
+
+    if (events.length === 0) {
+      renderAllEvents();
+    }
   };
 
   const renderEvent = ({ id, text }: Event) => {
@@ -66,7 +70,17 @@ export function setupEventInput() {
       fragment.appendChild(event);
     }
 
-    todayList.insertBefore(fragment, eventInput);
+    if (fragment.childNodes.length) {
+      todayList.insertBefore(fragment, eventInput);
+    } else {
+      const span = document.createElement("span");
+
+      span.id = "noEvents";
+
+      span.textContent = "No events yet";
+
+      todayList.insertBefore(span, eventInput);
+    }
   };
 
   const addEvent = () => {
@@ -74,13 +88,21 @@ export function setupEventInput() {
 
     if (!text) return;
 
-    const id = Math.max(...getStoredEvents().map((event) => event.id)) + 1;
+    const events = getStoredEvents();
+
+    const id = events.length
+      ? Math.max(...events.map((event) => event.id)) + 1
+      : 1;
 
     const newEvent = { id, text };
 
-    renderEvent(newEvent);
+    if (id === 1) {
+      const span = document.getElementById("noEvents");
 
-    const events = getStoredEvents();
+      if (span) span.remove();
+    }
+
+    renderEvent(newEvent);
 
     events.push(newEvent);
 
