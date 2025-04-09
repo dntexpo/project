@@ -1,28 +1,9 @@
-import { getTodayList, getEventInput } from "../dom/todayList";
-
-type Event = {
-  id: number;
-  text: string;
-};
+import { getTodayList, getEventInput } from "./dom";
+import { Event, getStoredEvents, saveEventsToStorage } from "./data";
 
 export function setupEventInput() {
   const todayList = getTodayList();
   const eventInput = getEventInput();
-
-  const LOCAL_STORAGE_KEY = "events";
-
-  const getStoredEvents = (): Event[] => {
-    try {
-      const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
-      return raw ? JSON.parse(raw) : [];
-    } catch {
-      return [];
-    }
-  };
-
-  const saveEventsToStorage = (events: Event[]) => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(events));
-  };
 
   const deleteEvent = (id: number, el: HTMLElement) => {
     if (!confirm("Are you sure?")) return;
